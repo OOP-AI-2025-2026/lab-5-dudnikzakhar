@@ -12,11 +12,15 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+
 
 /**
  * Поверхня для малювання фігур. Звичайний компонент Swing
  */
 public class PaintSurface extends JComponent {
+    private float strokeWidth = 2.0f;
+    private final Random randomGenerator = new Random();
 
     // Список фігур, які намальовані на поверхні
     private final List<DrawShape> shapes = new ArrayList<>();
@@ -127,7 +131,7 @@ public class PaintSurface extends JComponent {
         // 2. Рисуємо фонову сітку
         paintBackgroundGrid(g2);
         // 3. Встановлюємо розмір рамки фігури у 2 пікселі
-        g2.setStroke(new BasicStroke(2));
+        g2.setStroke(new BasicStroke(strokeWidth));
         // 4. Робимо напівпрозорим фон
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.50f));
 
@@ -180,4 +184,41 @@ public class PaintSurface extends JComponent {
             g2.draw(line);
         }
     }
+
+    public void clearSurface() {
+        shapes.clear();
+        repaint();
+    }
+
+    public void blastShapes(int count) {
+        int width = getWidth();
+        int height = getHeight();
+
+        for (int i = 0; i < count; i ++) {
+            int randomShape = randomGenerator.nextInt(3);
+
+            Point startPoint = new Point(randomGenerator.nextInt(width), randomGenerator.nextInt(height));
+            Point endPoint = new Point(randomGenerator.nextInt(width), randomGenerator.nextInt(height));
+
+            DrawShape shape = DrawShape.newInstance(randomShape);
+            shape.setStartPoint(startPoint);
+            shape.setEndPoint(endPoint);
+            shapes.add(shape);
+        }
+        repaint();
+    }
+
+    public void increaseStroke() {
+        strokeWidth += 1.0f;
+        repaint();
+    }
+
+    public void decreaseStroke() {
+        if (strokeWidth != 0.0f) {
+            strokeWidth -= 1.0f;
+            repaint();
+        }
+    }
+
+
 }
