@@ -64,7 +64,7 @@ public class DrawFrame extends JFrame {
         // повинні йти один за одним зліва направо з вирівнюванням по центру
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         // Колір фону панелі
-        buttonPanel.setBackground(Color.CYAN);
+        buttonPanel.setBackground(Color.MAGENTA);
         // Границя панелі (чорна окантовка навколо панелі)
         buttonPanel.setBorder(new LineBorder(Color.BLACK, 2));
 
@@ -99,8 +99,35 @@ public class DrawFrame extends JFrame {
         // Додаємо другу кнопку на верхню панель
         buttonPanel.add(rounded_rect);
 
-        // TODO: додати кнопку для еліпса за аналогією з іншими кнопками
-        // TODO: для додаткових балів додати кнопку "Clear" для очищення всіх фігур
+        BigTextButton ellipse = new BigTextButton("Ellipse.");
+        ellipse.addActionListener(e -> {
+            surface.setShapeType(DrawShape.SHAPE_ELLIPSE);
+        });
+        buttonPanel.add(ellipse);
+
+        BigTextButton clear = new BigTextButton("Clear.");
+        clear.addActionListener(e -> {
+            surface.clearSurface();
+        });
+        buttonPanel.add(clear);
+
+        BigTextButton blast = new BigTextButton("BLASTED.");
+        blast.addActionListener(e -> {
+            surface.blastShapes(50);
+        });
+        buttonPanel.add(blast);
+
+        BigTextButton thicker = new BigTextButton("Thicker+");
+        thicker.addActionListener(e -> {
+            surface.increaseStroke();
+        });
+        buttonPanel.add(thicker);
+
+        BigTextButton thinner = new BigTextButton("Thinner-");
+        thinner.addActionListener(e -> {
+            surface.decreaseStroke();
+        });
+        buttonPanel.add(thinner);
 
         return buttonPanel;
     }
